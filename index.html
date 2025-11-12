@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown to 13 November 💫</title>
+    <style>
+        body {
+            background: radial-gradient(circle at center, #0d0d1a, #000);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-top: 100px;
+            color: #ff7eb9;
+            text-shadow: 0 0 20px #ff7eb9;
+            animation: pulse 2s infinite;
+        }
+
+        #countdown {
+            font-size: 2em;
+            margin-top: 20px;
+            color: #ffb6c1;
+            text-shadow: 0 0 15px #ffb6c1;
+        }
+
+        #reasonBox {
+            margin-top: 50px;
+            font-size: 1.3em;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(255, 192, 203, 0.5);
+            animation: fadeIn 1s ease-in-out;
+            display: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff66b2, #ff3385);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 40px;
+            box-shadow: 0 0 15px #ff66b2;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #ff3385;
+        }
+
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px #ff7eb9;
+            }
+
+            50% {
+                text-shadow: 0 0 25px #ff4da6;
+            }
+
+            100% {
+                text-shadow: 0 0 10px #ff7eb9;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .wish {
+            font-size: 2.5em;
+            color: #ff80bf;
+            text-shadow: 0 0 25px #ff1a75;
+            animation: glow 2s infinite alternate;
+        }
+
+        .sorry {
+            font-size: 3em;
+            color: #ff4da6;
+            text-shadow: 0 0 40px #ff80bf;
+            animation: glowSorry 1.5s infinite alternate;
+            margin-top: 30px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 15px #ff4d94;
+            }
+
+            to {
+                text-shadow: 0 0 30px #ff99cc;
+            }
+        }
+
+        @keyframes glowSorry {
+            from {
+                text-shadow: 0 0 25px #ff4d94;
+                transform: scale(1);
+            }
+
+            to {
+                text-shadow: 0 0 45px #ff99cc;
+                transform: scale(1.05);
+            }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="confetti"></canvas>
+    <h1>Counting down to 13 November 💖</h1>
+    <div id="countdown"></div>
+    <button id="showReasons">💌 Why I Still Love You 💌</button>
+    <div id="reasonBox"></div>
+
+    <script>
+        const countdownEl = document.getElementById("countdown");
+        const reasonBox = document.getElementById("reasonBox");
+        const showBtn = document.getElementById("showReasons");
+
+        const targetDate = new Date("Nov 13, 2025 00:00:00").getTime();
+
+        const x = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(x);
+                countdownEl.style.display = "none";
+                showBtn.style.display = "none";
+                reasonBox.style.display = "block";
+                reasonBox.innerHTML = `
+          <div class="wish">🎂 Happy Birthday Shona 💖<br>
+          I Loved You Then, I Love You Now,<br>
+          and I’ll Love You Forever 💞</div>
+          <div class="sorry">💔 I'm Sorry My Shonaaaa 💔</div>
+        `;
+                startConfetti();
+            }
+        }, 1000);
+
+        const reasons = [
+            "I loved you because you were my peace in chaos 💫",
+            "I loved the way your smile made my world bright 🌞",
+            "I loved you because you believed in me when I didn’t 💖",
+            "I loved you for every little thing you did to make me smile 🌸",
+            "I loved you because your heart was pure and kind 💞",
+            "I loved how you made me feel like I mattered 🫶",
+            "I loved your laugh, it healed my darkest moments 🌙",
+            "I loved the way you looked at me like I was your world 💕",
+            "I loved the way you cared without expecting anything back 💗",
+            "I loved you, simply because you were you 💌"
+        ];
+
+        let index = 0;
+
+        showBtn.addEventListener("click", () => {
+            reasonBox.style.display = "block";
+            reasonBox.innerHTML = `💖 ${reasons[index]}`;
+            index++;
+            if (index >= reasons.length) index = 0;
+        });
+
+        function startConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetti = Array.from({ length: 150 }).map(() => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 2,
+                d: Math.random() * 0.9 + 0.2
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach((p) => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                    ctx.fill();
+                });
+                update();
+                requestAnimationFrame(draw);
+            }
+
+            function update() {
+                confetti.forEach((p) => {
+                    p.y += p.d * 4;
+                    if (p.y > canvas.height) {
+                        p.y = 0 - p.r;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+            }
+
+            draw();
+        }
+    </script>
+</body>
+
+</html>
